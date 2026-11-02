@@ -1,6 +1,6 @@
 [bot]
 botToken = "set me!"
-statusText =  RecFlare"
+statusText = "RecFlare"
 useStatus = false
 
 [recflare]
