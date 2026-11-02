@@ -9,6 +9,16 @@ class returns:
             self.profilePicUrl = ""
             self.joinedRecflare = ""
             self.playerExists = False
+    class roomInfo:
+        def __init__(self):
+            self.roomExists = False
+            self.roomName = ""
+            self.roomDescription = ""
+            self.roomVisits = 0
+            self.roomCreatorUsername = ""
+            self.roomMaxPlayers = 0
+            self.roomThumbnailUrl = ""
+            self.roomPublished = ""
 
 class recflareApi:
     def getPlayerProfileInfo(self, username: str) -> returns.accountInfo:
@@ -27,3 +37,22 @@ class recflareApi:
         account.joinedRecflare = data['createdAt'].split("T")[0]
         account.playerExists = True
         return account
+
+    def getRoomInfo(self, roomName: str) -> returns.roomInfo:
+        roomReq = requests.get(f"https://rooms.recflare.net/rooms?name={roomName}")
+        data = roomReq.json()
+        if not data:
+            roomDoesNotExist = returns.roomInfo()
+            roomDoesNotExist.roomExists = False
+            return roomDoesNotExist
+        data = roomReq.json()
+        room = returns.roomInfo()
+        room.roomName = data['Name']
+        room.roomDescription = data['Description']
+        room.roomVisits = data['Stats']['VisitCount']
+        room.roomThumbnailUrl = f"https://img.recflare.net/{data['ImageName']}?width=512"
+        room.roomPublished = data['PublishedAt'].split("T")[0]
+        room.roomMaxPlayers = data['MaxPlayers']
+        room.roomCreatorUsername = requests.get(f"https://accounts.recflare.net/account/{data['CreatorAccountId']}").json()['username']
+        room.roomExists = True
+        return room
