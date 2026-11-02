@@ -1,6 +1,7 @@
 [bot]
 botToken = "set me!"
-statusText = "Playing RecFlare"
+statusText =  RecFlare"
+useStatus = false
 
 [recflare]
 canUseRecflareApis = true

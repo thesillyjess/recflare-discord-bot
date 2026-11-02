@@ -13,18 +13,17 @@ class returns:
 class recflareApi:
     def getPlayerProfileInfo(self, username: str) -> returns.accountInfo:
         player = requests.get(f"https://accounts.recflare.net/account/search?name={username}")
-        data = player.json()[0]
-        print(data)
+        data = player.json()
         if not data:
             playerDoesntExistAccount = returns.accountInfo()
             playerDoesntExistAccount.playerExists = False
             return playerDoesntExistAccount
-
+        data = player.json()[0]
         account = returns.accountInfo()
         account.username = data['username']
         account.displayName = data['displayName']
         account.displayNameEmoji = data['displayEmoji']
-        account.profilePicUrl = f"img.recflare.net/{data['profileImage']}"
+        account.profilePicUrl = f"https://img.recflare.net/{data['profileImage']}?width=512"
         account.joinedRecflare = data['createdAt'].split("T")[0]
         account.playerExists = True
         return account
