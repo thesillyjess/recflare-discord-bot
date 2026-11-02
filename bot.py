@@ -27,7 +27,7 @@ async def getUserInfo(interaction: discord.Interaction, username: str, public: b
     if user.playerExists == False:
         await interaction.response.send_message(f"@{username} doesn't exist.", ephemeral=public)
         return
-    userJoined = f"{user.joinedRecflare.replace("-", "/").split("/")[2]}/{user.joinedRecflare.replace("-", "/").split("/")[1]}{user.joinedRecflare.replace("-", "/").split("/")[0]}"
+    userJoined = f"{user.joinedRecflare.replace("-", "/").split("/")[2]}/{user.joinedRecflare.replace("-", "/").split("/")[1]}/{user.joinedRecflare.replace("-", "/").split("/")[0]}"
     if user.displayNameEmoji == "":
         embed = discord.Embed(title=f"{user.displayName}",
                               description=f"Username: @{user.username}\nDisplay name: {user.displayName}\nJoined Recflare: {userJoined}")
