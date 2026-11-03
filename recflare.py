@@ -7,6 +7,7 @@ class returns:
             self.displayName = ""
             self.displayNameEmoji = ""
             self.profilePicUrl = ""
+            self.bio = ""
             self.joinedRecflare = ""
             self.bannerPicUrl = ""
             self.playerExists = False
