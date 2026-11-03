@@ -83,7 +83,7 @@ async def randomSlideshowImage(interaction: discord.Interaction, public: bool = 
     randomImage = random.choice(imageList)
     embed = discord.Embed(title=f"^{randomImage['RoomName']}",
                           description=f"Photo taker: @{randomImage['Username']}",)
-    embed.set_thumbnail(url=f"https://img.recflare.net/{randomImage['ImageName']}")
+    embed.set_image(url=f"https://img.recflare.net/{randomImage['ImageName']}")
     await interaction.response.send_message(embed=embed, ephemeral=public)
 
 
