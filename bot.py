@@ -78,7 +78,7 @@ async def hottestRoom(interaction: discord.Interaction, public: bool = False):
 @app_commands.describe(public="Show the response publicly")
 async def isRecflareUp(interaction: discord.Interaction, public: bool = False):
     public = not public
-    if api.getPlayersOnline():
+    if api.isRecflareUp():
         await interaction.response.send_message("Yeah Recflares good mate", ephemeral=public)
     else:
         await interaction.response.send_message("Nah Recflares down mate", ephemeral=public)
