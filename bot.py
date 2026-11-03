@@ -39,6 +39,21 @@ async def getUserInfo(interaction: discord.Interaction, username: str, public: b
     await interaction.response.send_message(embed=embed, ephemeral=public)
     return
 
+@bot.tree.command(name="get-room-info", description="Get info on a room")
+@app_commands.describe(room="Room name", public="Show the response publicly")
+async def getUserInfo(interaction: discord.Interaction, room: str, public: bool = False):
+    public = not public
+    roomData = api.getRoomInfo(room)
+    if roomData.roomExists == False:
+        await interaction.response.send_message(f"^{room} doesn't exist.", ephemeral=public)
+        return
+    roomPublished = f"{roomData.roomPublished.replace("-", "/").split("/")[2]}/{roomData.roomPublished.replace("-", "/").split("/")[1]}/{roomData.roomPublished.replace("-", "/").split("/")[0]}"
+    embed = discord.Embed(title=f"^{room}",
+                            description=f"Room description: {roomData.roomDescription}\nPublished to Recflare: {roomPublished}\nRoom creator: @{roomData.roomCreatorUsername}\nRoom visits: {roomData.roomVisits}\nRoom max players: {roomData.roomMaxPlayers}")
+    embed.set_thumbnail(url=roomData.roomThumbnailUrl)
+    await interaction.response.send_message(embed=embed, ephemeral=public)
+    return
+
 @bot.event
 async def on_ready():
     try:
