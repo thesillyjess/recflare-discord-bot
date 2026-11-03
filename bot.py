@@ -79,7 +79,7 @@ async def hottestRoom(interaction: discord.Interaction, public: bool = False):
 async def isRecflareUp(interaction: discord.Interaction, public: bool = False):
     public = not public
     if api.getPlayersOnline():
-        await interaction.response.send_message("Yeah Recflares good mate 👍", ephemeral=public)
+        await interaction.response.send_message("Yeah Recflares good mate", ephemeral=public)
     else:
         await interaction.response.send_message("Nah Recflares down mate", ephemeral=public)
 
