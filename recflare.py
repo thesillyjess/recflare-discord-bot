@@ -60,3 +60,7 @@ class recflareApi:
     def getPlayersOnline(self) -> int:
         req = requests.get("https://www.recflare.net/server-status").json()
         return int(req["players"])
+
+    def getHottestRoomName(self) -> str:
+        req = requests.get("https://rooms.recflare.net/rooms/hot?take=1").json()
+        return req["Results"][0]["Name"]

@@ -64,7 +64,15 @@ async def getPlayersOnline(interaction: discord.Interaction, public: bool = Fals
     else:
         status = "players"
     await interaction.response.send_message(f"There are {online} {status} online.", ephemeral=public)
+    return
 
+@bot.tree.command(name="hottest-room", description="Get the most popular Recflare room")
+@app_commands.describe(public="Show the response publicly")
+async def hottestRoom(interaction: discord.Interaction, public: bool = False):
+    public = not public
+    hottest = api.getHottestRoomName()
+    await interaction.response.send_message(f"The hottest room currently ^{hottest}", ephemeral=public)
+    return
 @bot.event
 async def on_ready():
     try:
