@@ -64,3 +64,10 @@ class recflareApi:
     def getHottestRoomName(self) -> str:
         req = requests.get("https://rooms.recflare.net/rooms/hot?take=1").json()
         return req["Results"][0]["Name"]
+
+    def isRecflareUp(self) -> bool:
+        req = requests.get("https://www.recflare.net/")
+        if req.status_code == 200:
+            return True
+        else:
+            return False

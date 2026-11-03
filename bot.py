@@ -73,6 +73,16 @@ async def hottestRoom(interaction: discord.Interaction, public: bool = False):
     hottest = api.getHottestRoomName()
     await interaction.response.send_message(f"The hottest room currently ^{hottest}", ephemeral=public)
     return
+
+@bot.tree.command(name="status", description="See if Recflare is currently up")
+@app_commands.describe(public="Show the response publicly")
+async def isRecflareUp(interaction: discord.Interaction, public: bool = False):
+    public = not public
+    if api.getPlayersOnline():
+        await interaction.response.send_message("Yeah Recflares good mate 👍", ephemeral=public)
+    else:
+        await interaction.response.send_message("Nah Recflares down mate", ephemeral=public)
+
 @bot.event
 async def on_ready():
     try:
