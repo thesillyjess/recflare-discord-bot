@@ -50,7 +50,7 @@ class recflareApi:
         room.roomName = data['Name']
         room.roomDescription = data['Description']
         room.roomVisits = data['Stats']['VisitCount']
-        room.roomThumbnailUrl = f"https://img.recflare.net/{data['ImageName']}?width=512"
+        room.roomThumbnailUrl = f"https://img.recflare.net/{data['ImageName']}"
         room.roomPublished = data['PublishedAt'].split("T")[0]
         room.roomMaxPlayers = data['MaxPlayers']
         room.roomCreatorUsername = requests.get(f"https://accounts.recflare.net/account/{data['CreatorAccountId']}").json()['username']
