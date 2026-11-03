@@ -54,6 +54,17 @@ async def getUserInfo(interaction: discord.Interaction, room: str, public: bool 
     await interaction.response.send_message(embed=embed, ephemeral=public)
     return
 
+@bot.tree.command(name="players-online", description="Get Recflares current player count")
+@app_commands.describe(public="Show the response publicly")
+async def getPlayersOnline(interaction: discord.Interaction, public: bool = False):
+    public = not public
+    online = api.getPlayersOnline()
+    if online == 1:
+        status = "player"
+    else:
+        status = "players"
+    await interaction.response.send_message(f"There are {online} {status} online.", ephemeral=public)
+
 @bot.event
 async def on_ready():
     try:

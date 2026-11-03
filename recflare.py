@@ -56,3 +56,7 @@ class recflareApi:
         room.roomCreatorUsername = requests.get(f"https://accounts.recflare.net/account/{data['CreatorAccountId']}").json()['username']
         room.roomExists = True
         return room
+
+    def getPlayersOnline(self) -> int:
+        req = requests.get("https://www.recflare.net/server-status").json()
+        return int(req["players"])
