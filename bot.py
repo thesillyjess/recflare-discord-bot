@@ -1,3 +1,4 @@
+import random
 from recflare import recflareApi
 from recflare import returns
 import discord
@@ -73,6 +74,18 @@ async def hottestRoom(interaction: discord.Interaction, public: bool = False):
     hottest = api.getHottestRoomName()
     await interaction.response.send_message(f"The hottest room currently ^{hottest}", ephemeral=public)
     return
+
+@bot.tree.command(name="random-slideshow-image", description="Get a random slideshow image")
+@app_commands.describe(public="Show the response publicly")
+async def randomSlideshowImage(interaction: discord.Interaction, public: bool = False):
+    public = not public
+    imageList = api.getSlideShowImages(10)["Images"]
+    randomImage = random.choice(imageList)
+    embed = discord.Embed(title=f"^{randomImage['RoomName']}",
+                          description=f"Photo taker: @{randomImage['Username']}",)
+    embed.set_thumbnail(url=f"https://img.recflare.net/{randomImage['ImageName']}")
+    await interaction.response.send_message(embed=embed, ephemeral=public)
+
 
 @bot.tree.command(name="bunny", description="Joke command")
 async def jokeBunny(interaction: discord.Interaction):

@@ -71,3 +71,7 @@ class recflareApi:
             return True
         else:
             return False
+
+    def getSlideShowImages(self, images: int):
+        req = requests.get(f"https://api.recflare.net/api/images/v1/slideshow?take={images}")
+        return req.json()
