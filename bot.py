@@ -74,6 +74,10 @@ async def hottestRoom(interaction: discord.Interaction, public: bool = False):
     await interaction.response.send_message(f"The hottest room currently ^{hottest}", ephemeral=public)
     return
 
+@bot.tree.command(name="bunny", description="Joke command")
+async def jokeBunny(interaction: discord.Interaction):
+    await interaction.response.send_message("Bunny is you", ephemeral=True)
+
 @bot.tree.command(name="status", description="See if Recflare is currently up")
 @app_commands.describe(public="Show the response publicly")
 async def isRecflareUp(interaction: discord.Interaction, public: bool = False):
