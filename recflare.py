@@ -35,7 +35,7 @@ class recflareApi:
         account.username = data['username']
         account.displayName = data['displayName']
         account.displayNameEmoji = data['displayEmoji']
-        account.bio = requests.get(f"https://accounts.recflare.net/account/{data['accountId']}").json()['bio']
+        account.bio = requests.get(f"https://accounts.recflare.net/account/{data['accountId']}/bio").json()['bio']
         account.bannerPicUrl = f"https://img.recflare.net/{data['bannerImage']}"
         account.profilePicUrl = f"https://img.recflare.net/{data['profileImage']}?width=512"
         account.joinedRecflare = data['createdAt'].split("T")[0]
