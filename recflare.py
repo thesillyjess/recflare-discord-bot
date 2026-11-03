@@ -8,6 +8,7 @@ class returns:
             self.displayNameEmoji = ""
             self.profilePicUrl = ""
             self.joinedRecflare = ""
+            self.bannerPicUrl = ""
             self.playerExists = False
     class roomInfo:
         def __init__(self):
@@ -33,6 +34,7 @@ class recflareApi:
         account.username = data['username']
         account.displayName = data['displayName']
         account.displayNameEmoji = data['displayEmoji']
+        account.bannerPicUrl = f"https://img.recflare.net/{data['bannerImage']}"
         account.profilePicUrl = f"https://img.recflare.net/{data['profileImage']}?width=512"
         account.joinedRecflare = data['createdAt'].split("T")[0]
         account.playerExists = True

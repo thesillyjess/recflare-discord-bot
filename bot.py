@@ -37,6 +37,7 @@ async def getUserInfo(interaction: discord.Interaction, username: str, public: b
         embed = discord.Embed(title=f"{user.displayName} [{user.displayNameEmoji}]",
                               description=f"Username: @{user.username}\nDisplay name: {user.displayName} [{user.displayNameEmoji}]\nJoined Recflare: {userJoined}")
         embed.set_thumbnail(url=user.profilePicUrl)
+        embed.set_image(user.bannerPicUrl)
     await interaction.response.send_message(embed=embed, ephemeral=public)
     return
 
@@ -51,7 +52,7 @@ async def getUserInfo(interaction: discord.Interaction, room: str, public: bool 
     roomPublished = f"{roomData.roomPublished.replace("-", "/").split("/")[2]}/{roomData.roomPublished.replace("-", "/").split("/")[1]}/{roomData.roomPublished.replace("-", "/").split("/")[0]}"
     embed = discord.Embed(title=f"^{room}",
                             description=f"Room description: {roomData.roomDescription}\nPublished to Recflare: {roomPublished}\nRoom creator: @{roomData.roomCreatorUsername}\nRoom visits: {roomData.roomVisits}\nRoom max players: {roomData.roomMaxPlayers}")
-    embed.set_thumbnail(url=roomData.roomThumbnailUrl)
+    embed.set_image(url=roomData.roomThumbnailUrl)
     await interaction.response.send_message(embed=embed, ephemeral=public)
     return
 
