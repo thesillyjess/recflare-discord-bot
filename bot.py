@@ -37,7 +37,7 @@ async def getUserInfo(interaction: discord.Interaction, username: str, public: b
         embed = discord.Embed(title=f"{user.displayName} [{user.displayNameEmoji}]",
                               description=f"Username: @{user.username}\nDisplay name: {user.displayName} [{user.displayNameEmoji}]\nJoined Recflare: {userJoined}")
         embed.set_thumbnail(url=user.profilePicUrl)
-        embed.set_image(user.bannerPicUrl)
+        embed.set_image(url=user.bannerPicUrl)
     await interaction.response.send_message(embed=embed, ephemeral=public)
     return
 
