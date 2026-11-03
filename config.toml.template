@@ -2,6 +2,3 @@
 botToken = "set me!"
 statusText = "RecFlare"
 useStatus = false
-
-[recflare]
-canUseRecflareApis = true
