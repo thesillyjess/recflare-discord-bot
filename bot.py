@@ -1,6 +1,6 @@
 import random
 from recflare import recflareApi
-from recflare import returns
+import modals
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -99,6 +99,26 @@ async def isRecflareUp(interaction: discord.Interaction, public: bool = False):
         await interaction.response.send_message("Yeah Recflares good mate", ephemeral=public)
     else:
         await interaction.response.send_message("Nah Recflares down mate", ephemeral=public)
+
+@bot.tree.command(name="send-message-from-bot", description="[STAFF/DEV] Send a message from the bot")
+@app_commands.checks.has_any_role(*config["bot"]["announcementRequiredRoleIds"])
+async def sendMessageFromBot(interaction: discord.Interaction, channel: discord.TextChannel):
+    if not config["bot"]["staffAnnouncementEnabled"]:
+        await interaction.response.send_message("Staff announcements have been disabled.", ephemeral=True)
+        return
+    modal = modals.staffAnnouncementModel()
+    await interaction.response.send_modal(modal)
+    await modal.wait()
+    if modal.modalSuccess == False:
+        await interaction.followup.send(modal.modalMessage, ephemeral=True)
+        return
+    try:
+        await channel.send(modal.modalMessage)
+    except Exception as e:
+        if "403 Forbidden" in str(e):
+            await interaction.followup.send("Error! Tried sending message to a channel I cannot access!", ephemeral=True)
+        else:
+            await interaction.followup.send(f"Error sending message!", ephemeral=True)
 
 @bot.event
 async def on_ready():

@@ -2,3 +2,5 @@
 botToken = "set me!"
 statusText = "RecFlare"
 useStatus = false
+staffAnnouncementEnabled = false
+announcementRequiredRoleIds = [1547457262522728468]
