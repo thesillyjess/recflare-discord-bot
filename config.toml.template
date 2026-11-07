@@ -4,3 +4,5 @@ statusText = "RecFlare"
 useStatus = false
 staffAnnouncementEnabled = false
 announcementRequiredRoleIds = [1547457262522728468]
+allowModerationCommands = true
+moderatorRoles = [1568744959962652672]

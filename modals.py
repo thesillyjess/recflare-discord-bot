@@ -18,3 +18,18 @@ class staffAnnouncementModel(discord.ui.Modal, title="[Staff only] Announcement 
             self.modalMessage = message
         defer = await interaction.response.defer(ephemeral=True)
         return
+
+class confirmGeneric(discord.ui.View):
+    def __init__(self, timeout: int = 60):
+        super().__init__(timeout=timeout)
+        self.confirmed = None
+
+    @discord.ui.button(label="Yes", style=discord.ButtonStyle.green, emoji="✅")
+    async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        self.confirmed = True
+        self.stop()
+
+    @discord.ui.button(label="No", style=discord.ButtonStyle.red, emoji="❌")
+    async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+        self.confirmed = False
+        self.stop()
