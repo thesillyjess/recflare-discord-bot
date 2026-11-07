@@ -3,6 +3,7 @@
 class staffAnnouncementModel(discord.ui.Modal, title="[Staff only] Announcement message"):
     modalSuccess = False
     modalMessage = ""
+    defer = None
     messageInput = discord.ui.TextInput(
         label="Message", style = discord.TextStyle.long,
         placeholder="Hey all! ...", required = True
@@ -15,4 +16,5 @@ class staffAnnouncementModel(discord.ui.Modal, title="[Staff only] Announcement 
         else:
             self.modalSuccess = True
             self.modalMessage = message
+        defer = await interaction.response.defer(ephemeral=True)
         return

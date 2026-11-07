@@ -110,15 +110,16 @@ async def sendMessageFromBot(interaction: discord.Interaction, channel: discord.
     await interaction.response.send_modal(modal)
     await modal.wait()
     if modal.modalSuccess == False:
-        await interaction.followup.send(modal.modalMessage, ephemeral=True)
+        await interaction.edit_original_response(content=modal.modalMessage)
         return
     try:
         await channel.send(modal.modalMessage)
+        await interaction.followup.send("sent!", ephemeral=True)
     except Exception as e:
         if "403 Forbidden" in str(e):
-            await interaction.followup.send("Error! Tried sending message to a channel I cannot access!", ephemeral=True)
+            await interaction.edit_original_response(content="Error! Tried sending message to a channel I cannot access!")
         else:
-            await interaction.followup.send(f"Error sending message!", ephemeral=True)
+            await interaction.edit_original_response(content=f"Error sending message!")
 
 @bot.event
 async def on_ready():
