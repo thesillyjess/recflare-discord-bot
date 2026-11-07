@@ -138,7 +138,7 @@ async def timeout(interaction: discord.Interaction, user: discord.Member, time: 
             duration = datetime.timedelta(seconds=time)
             await user.timeout(duration, reason=reason)
             await interaction.edit_original_response(content="Timed out.", view=None)
-        except discord.Forbidden as e:#
+        except discord.Forbidden as e:
             await interaction.edit_original_response(content="I can't do that.", view=None)
     else:
         await interaction.edit_original_response(content="Cancelled.", view=None)
