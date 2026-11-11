@@ -127,6 +127,9 @@ async def sendMessageFromBot(interaction: discord.Interaction, channel: discord.
 @app_commands.checks.has_permissions(moderate_members=True)
 @app_commands.checks.has_any_role(*config["bot"]["moderatorRoles"])
 async def timeout(interaction: discord.Interaction, user: discord.Member, time: int, reason: str):
+    if config["bot"]["allowModerationCommands"] == False:
+        await interaction.response.send_message("Moderation has been disabled.", ephemeral=True)
+        return
     confirmModal = modals.confirmGeneric()
     await interaction.response.send_message(f"Are you sure you wanna timeout @{user} for {time} seconds?", ephemeral=True, view=confirmModal)
     await confirmModal.wait()
@@ -148,6 +151,9 @@ async def timeout(interaction: discord.Interaction, user: discord.Member, time: 
 @app_commands.checks.has_permissions(kick_members=True)
 @app_commands.checks.has_any_role(*config["bot"]["moderatorRoles"])
 async def kick(interaction: discord.Interaction, user: discord.Member, reason: str):
+    if config["bot"]["allowModerationCommands"] == False:
+        await interaction.response.send_message("Moderation has been disabled.", ephemeral=True)
+        return
     confirmModal = modals.confirmGeneric()
     await interaction.response.send_message(f"Are you sure you wanna kick @{user}?", ephemeral=True, view=confirmModal)
     await confirmModal.wait()
