@@ -127,54 +127,60 @@ async def sendMessageFromBot(interaction: discord.Interaction, channel: discord.
 @app_commands.checks.has_permissions(moderate_members=True)
 @app_commands.checks.has_any_role(*config["bot"]["moderatorRoles"])
 async def timeout(interaction: discord.Interaction, user: discord.Member, time: int, reason: str):
-    try:
-        if config["bot"]["allowModerationCommands"] == False:
-            await interaction.response.send_message("Moderation has been disabled.", ephemeral=True)
-            return
-        confirmModal = modals.confirmGeneric()
-        await interaction.response.send_message(f"Are you sure you wanna timeout @{user} for {time} seconds?", ephemeral=True, view=confirmModal)
-        await confirmModal.wait()
-        if confirmModal.confirmed is None:
-            await interaction.edit_original_response(content="Command timed out. User was not timed out.", view=None)
-        elif confirmModal.confirmed:
-            try:
-                await interaction.edit_original_response(content="Timing out...", view=None)
-                duration = datetime.timedelta(seconds=time)
-                await user.timeout(duration, reason=reason)
-                await interaction.edit_original_response(content="Timed out.", view=None)
-            except discord.Forbidden as e:
-                await interaction.edit_original_response(content="I can't do that.", view=None)
-        else:
-            await interaction.edit_original_response(content="Cancelled.", view=None)
-    except discord.app_commands.errors.MissingAnyRole:
-        await interaction.response.send_message(f"Your not allowed to run this command.", ephemeral=True)
+    if config["bot"]["allowModerationCommands"] == False:
+        await interaction.response.send_message("Moderation has been disabled.", ephemeral=True)
+        return
+    confirmModal = modals.confirmGeneric()
+    await interaction.response.send_message(f"Are you sure you wanna timeout @{user} for {time} seconds?", ephemeral=True, view=confirmModal)
+    await confirmModal.wait()
+    if confirmModal.confirmed is None:
+        await interaction.edit_original_response(content="Command timed out. User was not timed out.", view=None)
+    elif confirmModal.confirmed:
+        try:
+            await interaction.edit_original_response(content="Timing out...", view=None)
+            duration = datetime.timedelta(seconds=time)
+            await user.timeout(duration, reason=reason)
+            await interaction.edit_original_response(content="Timed out.", view=None)
+        except discord.Forbidden as e:
+            await interaction.edit_original_response(content="I can't do that.", view=None)
+    else:
+        await interaction.edit_original_response(content="Cancelled.", view=None)
 
 @bot.tree.command(name="kick", description="[Staff] Kick a user")
 @app_commands.describe(user="User to kick", reason="Reason to Kick")
 @app_commands.checks.has_permissions(kick_members=True)
 @app_commands.checks.has_any_role(*config["bot"]["moderatorRoles"])
 async def kick(interaction: discord.Interaction, user: discord.Member, reason: str):
-    try:
-        if config["bot"]["allowModerationCommands"] == False:
-            await interaction.response.send_message("Moderation has been disabled.", ephemeral=True)
-            return
-        confirmModal = modals.confirmGeneric()
-        await interaction.response.send_message(f"Are you sure you wanna kick @{user}?", ephemeral=True, view=confirmModal)
-        await confirmModal.wait()
-        if confirmModal.confirmed is None:
-            await interaction.edit_original_response(content="Command timed out. User was not kicked.", view=None)
-        elif confirmModal.confirmed:
-            try:
-                await interaction.edit_original_response(content="kicking...", view=None)
-                await user.kick(reason=reason)
-                await interaction.edit_original_response(content="Kicked.", view=None)
-            except discord.Forbidden as e:
-                await interaction.edit_original_response(content="I can't do that.", view=None)
-        else:
-            await interaction.edit_original_response(content="Cancelled.", view=None)
-    except discord.app_commands.errors.MissingAnyRole:
-        await interaction.response.send_message(f"Your not allowed to run this command.", ephemeral=True)
+    if config["bot"]["allowModerationCommands"] == False:
+        await interaction.response.send_message("Moderation has been disabled.", ephemeral=True)
+        return
+    confirmModal = modals.confirmGeneric()
+    await interaction.response.send_message(f"Are you sure you wanna kick @{user}?", ephemeral=True, view=confirmModal)
+    await confirmModal.wait()
+    if confirmModal.confirmed is None:
+        await interaction.edit_original_response(content="Command timed out. User was not kicked.", view=None)
+    elif confirmModal.confirmed:
+        try:
+            await interaction.edit_original_response(content="kicking...", view=None)
+            await user.kick(reason=reason)
+            await interaction.edit_original_response(content="Kicked.", view=None)
+        except discord.Forbidden as e:
+            await interaction.edit_original_response(content="I can't do that.", view=None)
+    else:
+        await interaction.edit_original_response(content="Cancelled.", view=None)
+@sendMessageFromBot.error
+async def sendMessageFromBotError(interaction: discord.Interaction, error: app_commands.AppCommandError):
+    if isinstance(error, app_commands.MissingAnyRole):
+        await interaction.response.send_message("You don't have permission to use this command.", ephemeral=True)
+    else:
+        raise error
 
+@kick.error
+async def kickError(interaction: discord.Interaction, error: app_commands.AppCommandError):
+    if isinstance(error, app_commands.MissingAnyRole):
+        await interaction.response.send_message("You don't have permission to use this command.", ephemeral=True)
+    else:
+        raise error
 
 @bot.event
 async def on_ready():
