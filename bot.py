@@ -175,7 +175,7 @@ async def on_ready():
     try:
         await bot.tree.sync()
         if config['bot']['useStatus']:
-            await bot.change_presence(status=discord.Status.online, activity=discord.Game(name=config['bot']['statusText']))
+            await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.custom, name=config['bot']['statusText'], state=config['bot']['statusText']))
         print("Synced")
     except Exception as e:
         print(f"Sync Error: {e}")
