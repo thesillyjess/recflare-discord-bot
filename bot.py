@@ -32,7 +32,7 @@ async def getUserInfo(interaction: discord.Interaction, username: str, public: b
     userJoined = f"{user.joinedRecflare.replace("-", "/").split("/")[2]}/{user.joinedRecflare.replace("-", "/").split("/")[1]}/{user.joinedRecflare.replace("-", "/").split("/")[0]}"
     if user.displayNameEmoji == "":
         embed = discord.Embed(title=f"{user.displayName}",
-                              description=f"Username: @{user.username}\nDisplay name: {user.displayName}\nJoined Recflare: {userJoined}")
+                              description=f"Username: @{user.username}\nDisplay name: {user.displayName}\nJoined Recflare: {userJoined}\n\nBio: {user.bio}")
         embed.set_thumbnail(url=user.profilePicUrl)
     else:
         embed = discord.Embed(title=f"{user.displayName} [{user.displayNameEmoji}]",
