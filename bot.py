@@ -7,6 +7,7 @@ from discord.ext import commands
 import toml
 import time
 import datetime
+from feedback import feedbackDbHandler
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -20,6 +21,9 @@ except FileNotFoundError:
     print("config.toml not found. duplicate config.toml.template, rename to config.toml, and change the config.")
     time.sleep(30)
     exit(1)
+
+if config["extras"]["feedbackEnabled"]:
+    feedbackHandler = feedbackDbHandler.handler()
 
 @bot.tree.command(name="get-user-info", description="Get info on a user")
 @app_commands.describe(username="Player username without @", public="Show the response publicly")
@@ -91,6 +95,18 @@ async def randomSlideshowImage(interaction: discord.Interaction, public: bool = 
 @bot.tree.command(name="bunny", description="Joke command")
 async def jokeBunny(interaction: discord.Interaction):
     await interaction.response.send_message("Bunny is you", ephemeral=True) # Bunny :0
+
+@bot.tree.command(name="feedback", description="Leave feedback about the bot")
+async def leaveFeedback(interaction: discord.Interaction):
+    if not config["extras"]["feedbackEnabled"]:
+        await interaction.response.send_message("Feedback is disabled.", ephemeral=True)
+        return
+    modal = modals.feedbackModal()
+    await interaction.response.send_modal(modal)
+    await modal.wait()
+    if modal.modalSuccess == True:
+        feedbackHandler.addFeedback(userId=interaction.user.id, feedbackString=modal.modalMessage, guildIdFrom=interaction.guild.id)
+        return
 
 @bot.tree.command(name="status", description="See if Recflare is currently up")
 @app_commands.describe(public="Show the response publicly")
@@ -198,4 +214,7 @@ async def on_ready():
         print("Synced")
     except Exception as e:
         print(f"Sync Error: {e}")
-bot.run(config["bot"]["botToken"])
+try:
+    bot.run(config["bot"]["botToken"])
+finally:
+    feedbackHandler.shutdown()

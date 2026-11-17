@@ -33,3 +33,23 @@ class confirmGeneric(discord.ui.View):
     async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.confirmed = False
         self.stop()
+
+class feedbackModal(discord.ui.Modal, title="Leave us feedback"):
+    modalSuccess = False
+    modalMessage = ""
+    defer = None
+    messageInput = discord.ui.TextInput(
+        label="Whats your feedback?", style = discord.TextStyle.long,
+        placeholder="The bot...", required = True
+    )
+
+    async def on_submit(self, interaction: discord.Interaction):
+        message = self.messageInput.value
+        if len(message) > 2000:
+            self.modalMessage = "Message too long! Max is 2000 characters"
+        else:
+            self.modalSuccess = True
+            self.modalMessage = message
+        await interaction.response.defer(ephemeral=True, thinking=True)
+        await interaction.edit_original_response(content=f"Thanks {interaction.user.display_name} for your feedback!")
+        return
