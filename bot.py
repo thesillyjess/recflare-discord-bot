@@ -175,6 +175,13 @@ async def sendMessageFromBotError(interaction: discord.Interaction, error: app_c
     else:
         raise error
 
+@timeout.error
+async def kickError(interaction: discord.Interaction, error: app_commands.AppCommandError):
+    if isinstance(error, app_commands.MissingAnyRole):
+        await interaction.response.send_message("You don't have permission to use this command.", ephemeral=True)
+    else:
+        raise error
+
 @kick.error
 async def kickError(interaction: discord.Interaction, error: app_commands.AppCommandError):
     if isinstance(error, app_commands.MissingAnyRole):
